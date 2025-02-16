@@ -1,0 +1,15 @@
+{
+    "build": {
+      "dockerfile": "Dockerfile"
+    },
+    "deploy": {
+      "start": "python bot.py"
+    },
+    "env": {
+      "TELEGRAM_TOKEN": {
+        "description": "Your Telegram Bot Token",
+        "value": "8171453958:AAH4-RbH7spozWrcjVgtGb1rF_EFNzfnnyM"
+      }
+    }
+  }
+  
