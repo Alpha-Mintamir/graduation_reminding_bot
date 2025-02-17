@@ -84,10 +84,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("I’ll update you every 2 days on graduation!")
 
 def main() -> None:
-    application = ApplicationBuilder().token(TELEGRAM_TOKEN).job_queue(
-        job_queue=JobQueue(timezone=TIMEZONE)
-    ).build()
-    
+    application = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
+
+    # Explicitly set the JobQueue timezone after building the application
+    application.job_queue.timezone = TIMEZONE
+
     application.add_handler(CommandHandler("start", start))
     
     application.run_webhook(
@@ -97,6 +98,7 @@ def main() -> None:
         webhook_url=f"{WEBHOOK_URL}/{TELEGRAM_TOKEN}",
         secret_token=SECRET_TOKEN  # Optional security measure
     )
+
 
 if __name__ == "__main__":
     main()
