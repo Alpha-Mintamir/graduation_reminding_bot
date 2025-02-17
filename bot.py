@@ -4,12 +4,14 @@ import logging
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
 from dotenv import load_dotenv
+from pytz import timezone
 from telegram import Update
 from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
     ContextTypes,
     CallbackContext,
+    JobQueue,
 )
 
 # Load environment variables
@@ -27,6 +29,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 GRADUATION_DATE = datetime.date(2025, 7, 5)
+TIMEZONE = timezone("UTC")  # Change to your desired timezone
 
 def create_progress_image(days_left: int, total_days: int) -> BytesIO:
     logger.info("Creating progress image with %d days left out of %d total days", days_left, total_days)
@@ -81,7 +84,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("I’ll update you every 2 days on graduation!")
 
 def main() -> None:
-    application = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
+    application = ApplicationBuilder().token(TELEGRAM_TOKEN).job_queue(
+        job_queue=JobQueue(timezone=TIMEZONE)
+    ).build()
+    
     application.add_handler(CommandHandler("start", start))
     
     application.run_webhook(
