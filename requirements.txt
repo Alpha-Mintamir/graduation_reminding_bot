@@ -1,7 +1,5 @@
-python-telegram-bot[webhooks]
-Pillow==8.0.0
+python-telegram-bot==20.8  # Latest stable version (adjust if needed)
+Pillow>=8.0.0  # Allow newer versions for compatibility
 apscheduler==3.8.1
-python-dotenv
- 
+python-dotenv>=1.0.0
 pytz
- 
